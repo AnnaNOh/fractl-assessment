@@ -1,0 +1,13 @@
+Preparedness,Age,Gender,Percent Value
+ready,19 to 27,men,0.04
+somewhat ready,19 to 27,men,0.33
+not ready,19 to 27,men,0.63
+ready,28 to 36,men,0.12
+somewhat ready,28 to 36,men,0.36
+not ready,28 to 36,men,0.52
+ready,19 to 27,women,0.08
+somewhat ready,19 to 27,women,0.33
+not ready,19 to 27,women,0.59
+ready,28 to 36,women,0.18
+somewhat ready,28 to 36,women,0.53
+not ready,28 to 36,women,0.29
