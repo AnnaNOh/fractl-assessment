@@ -5042,7 +5042,7 @@ function clipEdges(x0, y0, x1, y1) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_feature__ = __webpack_require__(94);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__src_feature__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_mesh__ = __webpack_require__(480);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__src_mesh__["a"]; });
+/* unused harmony reexport mesh */
 /* unused harmony reexport meshArcs */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_merge__ = __webpack_require__(481);
 /* unused harmony reexport merge */
@@ -5052,7 +5052,7 @@ function clipEdges(x0, y0, x1, y1) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_quantize__ = __webpack_require__(484);
 /* unused harmony reexport quantize */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_transform__ = __webpack_require__(93);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_6__src_transform__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_6__src_transform__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_untransform__ = __webpack_require__(181);
 /* unused harmony reexport untransform */
 
@@ -9992,23 +9992,53 @@ __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* queue */]()
   .defer(__WEBPACK_IMPORTED_MODULE_0_d3__["a" /* csv */], "./data/data-states.csv")
   .await(ready);
 
+
 function ready(error, us, percentOfPop) {
   if (error) throw error;
 
-  console.log("PERCENT OF POP HERE");
-  console.log(percentOfPop);
+  let i = 0;
+  percentOfPop.forEach( function(d){
+    // data manipulation
+    d.id = String(i);
+    i += 1;
+    d.PercentofPopulation = Number(d.PercentofPopulation.slice(0, -1));
+    d.MedianHouseholdIncome = Number(d.MedianHouseholdIncome.slice(1).replace(",", ""));
+    d.PercentofIncome = Number(d.PercentofIncome.slice(0, -1));
+    // console.log(d);
+  });
+
+  // push data-states.csv data into us (the d3 json state data)
+    us.objects.states.geometries.forEach ( function(json){
+      percentOfPop.forEach (function(pop){
+        if (json.id === pop.id) {
+          json.StateAbbv = pop.StateAbbv;
+          json.State = pop.State;
+          json.PercentofPopulation = pop.PercentofPopulation;
+          json.MedianHouseholdIncome = pop.MedianHouseholdIncome;
+          json.PercentofPopulation = pop.PercentofPopulation;
+        }
+      });
+
+  });
 
   svg.append("g")
       .attr("class", "states")
       .selectAll("path")
       .data(__WEBPACK_IMPORTED_MODULE_1_topojson__["a" /* feature */](us, us.objects.states).features)
       .enter().append("path")
-      .attr("d", path);
+      .attr("d", path)
+      .style("stroke", "white")
+      .style("stroke-width", "1")
+      .style("fill", function(d){
+        
+      });
 
   svg.append("path")
-      .datum(__WEBPACK_IMPORTED_MODULE_1_topojson__["b" /* mesh */](us, us.objects.states, function(a, b) { return a !== b; }))
+      .data(us.objects.states.geometries)
+      // .data(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
       .attr("class", "state-borders")
       .attr("d", path);
+
 }
 
 
@@ -23195,7 +23225,6 @@ function nopropagation() {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_topojson_client__ = __webpack_require__(92);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0_topojson_client__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0_topojson_client__["b"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_topojson_server__ = __webpack_require__(485);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_topojson_simplify__ = __webpack_require__(496);
@@ -23227,7 +23256,7 @@ function nopropagation() {
 
 
 
-/* harmony default export */ __webpack_exports__["a"] = (function(topology) {
+/* unused harmony default export */ var _unused_webpack_default_export = (function(topology) {
   return Object(__WEBPACK_IMPORTED_MODULE_0__feature__["b" /* object */])(topology, meshArcs.apply(this, arguments));
 });
 
@@ -24611,7 +24640,7 @@ function copy(point) {
 }
 
 /* unused harmony default export */ var _unused_webpack_default_export = (function(topology, weight) {
-  var point = topology.transform ? Object(__WEBPACK_IMPORTED_MODULE_0_topojson_client__["c" /* transform */])(topology.transform) : copy,
+  var point = topology.transform ? Object(__WEBPACK_IMPORTED_MODULE_0_topojson_client__["b" /* transform */])(topology.transform) : copy,
       heap = Object(__WEBPACK_IMPORTED_MODULE_1__heap__["a" /* default */])();
 
   if (weight == null) weight = __WEBPACK_IMPORTED_MODULE_2__planar__["b" /* planarTriangleArea */];
