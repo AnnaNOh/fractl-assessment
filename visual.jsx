@@ -33,47 +33,50 @@ d3.queue()
 function ready(error, us, percentOfPop) {
   if (error) throw error;
 
-  let i = 0;
+  let i = 1;
   percentOfPop.forEach( function(d){
     // data manipulation
-    d.id = String(i);
+    if (i < 10) {
+      d.id = "0" + String(i);
+    } else {
+      d.id = String(i);
+    }
     i += 1;
-    d.PercentofPopulation = Number(d.PercentofPopulation.slice(0, -1));
-    d.MedianHouseholdIncome = Number(d.MedianHouseholdIncome.slice(1).replace(",", ""));
-    d.PercentofIncome = Number(d.PercentofIncome.slice(0, -1));
-    // console.log(d);
+    if (d.PercentofPopulation !== undefined) {
+      d.PercentofPopulation = Number(d.PercentofPopulation.slice(0, -1));
+      d.MedianHouseholdIncome = Number(d.MedianHouseholdIncome.slice(1).replace(",", ""));
+      d.PercentofIncome = Number(d.PercentofIncome.slice(0, -1));
+    }
   });
 
   // push data-states.csv data into us (the d3 json state data)
-    us.objects.states.geometries.forEach ( function(json){
-      percentOfPop.forEach (function(pop){
-        if (json.id === pop.id) {
-          json.StateAbbv = pop.StateAbbv;
-          json.State = pop.State;
-          json.PercentofPopulation = pop.PercentofPopulation;
-          json.MedianHouseholdIncome = pop.MedianHouseholdIncome;
-          json.PercentofPopulation = pop.PercentofPopulation;
-        }
-      });
-
+  us.objects.states.geometries.forEach ( function(json){
+    percentOfPop.forEach (function(pop){
+      if (json.id === pop.id) {
+        json.StateAbbv = pop.StateAbbv;
+        json.State = pop.State;
+        json.PercentofPopulation = pop.PercentofPopulation;
+        json.MedianHouseholdIncome = pop.MedianHouseholdIncome;
+        json.PercentofPopulation = pop.PercentofPopulation;
+        // console.log(json);
+      }
+    });
   });
 
+  console.log((us.objects.states));
+
   svg.append("g")
-      .attr("class", "states")
+      .attr("class", "us")
       .selectAll("path")
       .data(topojson.feature(us, us.objects.states).features)
       .enter().append("path")
+      .attr("class", function(d){
+        return d.id;
+      })
       .attr("d", path)
-      .style("stroke", "white")
-      .style("stroke-width", "1")
-      .style("fill", function(d){
-        
-      });
+      .attr("stroke", "white")
+      .attr("stroke-width", "1");
 
-  svg.append("path")
-      .data(us.objects.states.geometries)
-      // .data(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-      .attr("class", "state-borders")
-      .attr("d", path);
+  
 
 }
