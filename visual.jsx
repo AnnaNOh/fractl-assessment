@@ -14,13 +14,12 @@ var svg = d3.select("svg")
             .attr("width", width)
             .attr("height", height);
 
-var unemployment = d3.map();
 
 var path = d3.geoPath();
 
 var x = d3.scaleLinear().domain([40, 60]).rangeRound([600, 860]);
 
-var color = "blue";
+// var color = "blue";
 // var color = scaleChromatic.interpolateRdBu();
 // var color = d3.scaleThreshold().domain(d3.range(40,60)).range(d3.schemeBlues[9]);
 
@@ -30,12 +29,13 @@ d3.queue()
   .await(ready);
 
 
+let data = {};
 function ready(error, us, percentOfPop) {
   if (error) throw error;
 
+  // data manipulation of the data-states.csv file
   let i = 1;
   percentOfPop.forEach( function(d){
-    // data manipulation
     if (i < 10) {
       d.id = "0" + String(i);
     } else {
@@ -46,8 +46,13 @@ function ready(error, us, percentOfPop) {
       d.PercentofPopulation = Number(d.PercentofPopulation.slice(0, -1));
       d.MedianHouseholdIncome = Number(d.MedianHouseholdIncome.slice(1).replace(",", ""));
       d.PercentofIncome = Number(d.PercentofIncome.slice(0, -1));
+
+// set data hash with id = state's info from data-states.csv
+      data[d.id] = d;
     }
   });
+
+
 
   // push data-states.csv data into us (the d3 json state data)
   us.objects.states.geometries.forEach ( function(json){
@@ -63,7 +68,6 @@ function ready(error, us, percentOfPop) {
     });
   });
 
-  console.log((us.objects.states));
 
   svg.append("g")
       .attr("class", "us")
@@ -77,6 +81,32 @@ function ready(error, us, percentOfPop) {
       .attr("stroke", "white")
       .attr("stroke-width", "1");
 
-  
+
+  console.log(data);
+
+
+
+// change the color of the state depending on the percent of population
+
+  const domainMax = 60.0;
+  const domainMin = 30;
+  const numColors = 9;
+  const color = scaleChromatic.schemeBlues[numColors];
+  console.log(color);
+  // d3.scaleLinear().domain([30, 60]).range(scaleChromatic.schemeBlues[9]);
+
+ // ********************* start from here
+  svg.selectAll("path")
+      .attr("fill", function(d){
+        ((domainMax - domainMin)/ numColors )
+        data[d.id]
+      });
+      // .attr("fill", function(d){
+      //   if (data[d.id].PercentofPopulation < 50){
+      //     return "blue";
+      //   } else {
+      //     return "orange";
+      //   }
+      // });
 
 }
