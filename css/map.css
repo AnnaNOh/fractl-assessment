@@ -3,3 +3,31 @@
   font-size: 5em;
   color: blue;
 }
+
+.legendTitle {
+  margin-left: 20px;
+  /*padding-bottom: 40px;*/
+  /*padding-left: 50px;*/
+  position: relative;
+  top: -60px;
+  font-size: 1.3em;
+  font-weight: 600;
+
+}
+
+.legendTextHolder {
+  margin-top: 40px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+}
+
+.legendText {
+  position: relative;
+  left: 5px;
+  width: 100px;
+  /*padding-right: 25px;*/
+  font-size: 0.7em;
+  font-weight: 400;
+}
