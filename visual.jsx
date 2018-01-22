@@ -44,6 +44,11 @@ function ready(error, us, percentOfPop) {
       d.PercentofPopulation = Number(d.PercentofPopulation.slice(0, -1));
       d.MedianHouseholdIncome = Number(d.MedianHouseholdIncome.slice(1).replace(",", ""));
       d.PercentofIncome = Number(d.PercentofIncome.slice(0, -1));
+      let stateName = [];
+      d.State = d.State.split(" ").forEach( function(word){
+        stateName.push(word.slice(0,1).toUpperCase() + word.slice(1));
+      });
+      d.State = stateName.join(" ");
 // set data hash with id = state's info from data-states.csv
 // data-states file was altered to match order of US census
       data[d.id] = d;
@@ -153,17 +158,49 @@ function ready(error, us, percentOfPop) {
   hoverInfo.className = "hoverInfo";
   graph.appendChild(hoverInfo);
 
+  // State Name and Abbv
+  let stateNameDiv = document.createElement("div");
+  stateNameDiv.className = "stateNameDiv";
+  hoverInfo.appendChild(stateNameDiv);
+
+  let stateAbbv = document.createElement("div");
+  stateAbbv.className = "stateAbbv";
+  stateNameDiv.appendChild(stateAbbv);
+
   let stateName = document.createElement("div");
+  stateName.className = "stateName";
+  stateNameDiv.appendChild(stateName);
 
-  stateName.classname = "stateName";
-  hoverInfo.appendChild(stateName);
+  // State's Other Info
+  let stateHouseholdIncome = document.createElement("div");
+  stateHouseholdIncome.className = "stateHouseholdIncome";
+  hoverInfo.appendChild(stateHouseholdIncome);
 
-  // added hover listener 
+  let statePercentofPop = document.createElement("div");
+  statePercentofPop.className = "statePercentofPop";
+  hoverInfo.appendChild(statePercentofPop);
+
+  let statePercentofIncome = document.createElement("div");
+  statePercentofIncome.className = "statePercentofIncome";
+  hoverInfo.appendChild(statePercentofIncome);
+
+
+  // added hover listener
   let states = document.getElementsByClassName("state");
   let stateIdx = 0;
   while (stateIdx < states.length) {
     states[stateIdx].addEventListener("mouseover", function(hovered) {
-    console.log(hovered.toElement);
+    let hoveredClassName = Number(hovered.toElement.className.baseVal.slice(5));
+    if (hoveredClassName < 10) {
+      hoveredClassName = "0" + hoveredClassName.toString();
+    }
+    console.log(data[hoveredClassName]);
+    let hoverData = data[hoveredClassName];
+    stateAbbv.innerHTML = hoverData.StateAbbv;
+    stateName.innerHTML = hoverData.State;
+    stateHouseholdIncome.innerHTML = `$${hoverData.MedianHouseholdIncome.toString().slice(0,2)},${hoverData.MedianHouseholdIncome.toString().slice(2)}`;
+    statePercentofPop.innerHTML = hoverData.PercentofPopulation;
+    statePercentofIncome.innerHTML = hoverData.PercentofIncome;
 
   });
     stateIdx += 1;
