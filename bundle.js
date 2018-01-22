@@ -9966,37 +9966,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 const width = 960;
 const height = 600;
-
-// change color
-var fill = "blue";
-
 
 var svg = __WEBPACK_IMPORTED_MODULE_0_d3__["f" /* select */]("svg")
             .attr("width", width)
             .attr("height", height);
 
-
 var path = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* geoPath */]();
 
 var x = __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* scaleLinear */]().domain([40, 60]).rangeRound([600, 860]);
 
-// var color = "blue";
-// var color = scaleChromatic.interpolateRdBu();
-// var color = d3.scaleThreshold().domain(d3.range(40,60)).range(d3.schemeBlues[9]);
 
+// going through data to manipulate it
 __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* queue */]()
   .defer(__WEBPACK_IMPORTED_MODULE_0_d3__["c" /* json */], "https://d3js.org/us-10m.v1.json")
   .defer(__WEBPACK_IMPORTED_MODULE_0_d3__["a" /* csv */], "./data/data-states.csv")
   .await(ready);
-
-
 let data = {};
 function ready(error, us, percentOfPop) {
   if (error) throw error;
 
-  // data manipulation of the data-states.csv file
+  // changing data-states.csv file's data to integers and removing signs
   let i = 1;
   percentOfPop.forEach( function(d){
     if (i < 10) {
@@ -10009,12 +10001,11 @@ function ready(error, us, percentOfPop) {
       d.PercentofPopulation = Number(d.PercentofPopulation.slice(0, -1));
       d.MedianHouseholdIncome = Number(d.MedianHouseholdIncome.slice(1).replace(",", ""));
       d.PercentofIncome = Number(d.PercentofIncome.slice(0, -1));
-
 // set data hash with id = state's info from data-states.csv
+// data-states file was altered to match order of US census
       data[d.id] = d;
     }
   });
-
 
 
   // push data-states.csv data into us (the d3 json state data)
@@ -10026,12 +10017,12 @@ function ready(error, us, percentOfPop) {
         json.PercentofPopulation = pop.PercentofPopulation;
         json.MedianHouseholdIncome = pop.MedianHouseholdIncome;
         json.PercentofPopulation = pop.PercentofPopulation;
-        // console.log(json);
       }
     });
   });
 
 
+// making the state map
   svg.append("g")
       .attr("class", "us")
       .selectAll("path")
@@ -10048,29 +10039,56 @@ function ready(error, us, percentOfPop) {
   console.log(data);
 
 
-
 // change the color of the state depending on the percent of population
+  const domainMax = 61.0;
+  const domainMin = 30.0;
+  const numColors = 9.0;
+  const increment = (domainMax - domainMin)/ numColors;
+  let color = 0;
+  const colorScheme = __WEBPACK_IMPORTED_MODULE_2_d3_scale_chromatic__["a" /* schemeBlues */][numColors];
 
-  const domainMax = 60.0;
-  const domainMin = 30;
-  const numColors = 9;
-  const color = __WEBPACK_IMPORTED_MODULE_2_d3_scale_chromatic__["a" /* schemeBlues */][numColors];
-  console.log(color);
-  // d3.scaleLinear().domain([30, 60]).range(scaleChromatic.schemeBlues[9]);
-
- // ********************* start from here
   svg.selectAll("path")
       .attr("fill", function(d){
-        ((domainMax - domainMin)/ numColors )
-        data[d.id]
+        color = Math.floor((data[d.id].PercentofPopulation - domainMin) / increment);
+        return colorScheme[color];
       });
-      // .attr("fill", function(d){
-      //   if (data[d.id].PercentofPopulation < 50){
-      //     return "blue";
-      //   } else {
-      //     return "orange";
-      //   }
-      // });
+
+
+// color legend
+  const legendWidth = 300;
+  const legendHeight = 8;
+  const legendY = 0;
+  const legendX = 100;
+  const legendTickY = 13;
+
+  let colorIdx = 0;
+  while (colorIdx < numColors) {
+    svg.append("rect")
+        .attr("class", "legendRect")
+        .attr("x", legendX + (colorIdx * legendWidth/numColors) )
+        .attr("y", legendY)
+        .attr("height", legendHeight)
+        .attr("width", legendWidth/numColors)
+        .attr("fill", colorScheme[colorIdx] );
+    svg.append("g")
+        .attr("class", "tick")
+        .attr("x", legendX + (colorIdx * legendWidth/numColors))
+        .append("hr")
+        // .attr("x", legendX + (colorIdx * legendWidth/numColors))
+        .attr("stroke", "#000")
+        .attr("width", 1)
+        .attr("height", legendTickY)
+
+        .append("text")
+        .text("testing")
+        .attr("fill", "#000")
+        .attr("font-size", "0.71em");
+
+    console.log(colorIdx);
+    colorIdx += 1;
+
+  }
+
 
 }
 
