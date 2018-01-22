@@ -198,9 +198,9 @@ function ready(error, us, percentOfPop) {
     let hoverData = data[hoveredClassName];
     stateAbbv.innerHTML = hoverData.StateAbbv;
     stateName.innerHTML = hoverData.State;
-    stateHouseholdIncome.innerHTML = `$${hoverData.MedianHouseholdIncome.toString().slice(0,2)},${hoverData.MedianHouseholdIncome.toString().slice(2)}`;
-    statePercentofPop.innerHTML = hoverData.PercentofPopulation;
-    statePercentofIncome.innerHTML = hoverData.PercentofIncome;
+    stateHouseholdIncome.innerHTML = `Median Household Income: $${hoverData.MedianHouseholdIncome.toString().slice(0,2)},${hoverData.MedianHouseholdIncome.toString().slice(2)}`;
+    statePercentofPop.innerHTML = `Percent of Population: ${hoverData.PercentofPopulation}%`;
+    statePercentofIncome.innerHTML = `Percent of Income: ${hoverData.PercentofIncome}%`;
 
   });
     stateIdx += 1;
