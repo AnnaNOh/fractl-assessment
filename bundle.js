@@ -10036,7 +10036,7 @@ function ready(error, us, percentOfPop) {
       .data(__WEBPACK_IMPORTED_MODULE_1_topojson__["a" /* feature */](us, us.objects.states).features)
       .enter().append("path")
       .attr("class", function(d){
-        return d.id;
+        return `state ${d.id}` ;
       })
       .attr("d", path)
       .attr("stroke", "white")
@@ -10101,12 +10101,41 @@ function ready(error, us, percentOfPop) {
   let legendText = document.createElement("div");
   while (colorIdx < numColors) {
     let cln = legendText.cloneNode(true);
-    cln.innerHTML = `${(Math.round((domainMin + (increment * colorIdx))*10) /10).toFixed(1) } to ${(Math.round((domainMin + (increment * (colorIdx+1)))*10)/10).toFixed(1) }`;
+    cln.innerHTML = `${(Math.round((domainMin + (increment * colorIdx)))) }
+                    to
+                    ${ (Math.round( (domainMin + (increment * (colorIdx+1) ) ) - 1 )) }`;
     cln.className = `legendText item${colorIdx}`;
     legendTextHolder.appendChild(cln);
 
     colorIdx += 1;
   }
+
+
+  //added Hover Information
+  let hoverInfo = document.createElement("div");
+  hoverInfo.className = "hoverInfo";
+  graph.appendChild(hoverInfo);
+
+  let stateName = document.createElement("div");
+
+  stateName.classname = "stateName";
+  hoverInfo.appendChild(stateName);
+
+  // added hover listener 
+  let states = document.getElementsByClassName("state");
+  let stateIdx = 0;
+  while (stateIdx < states.length) {
+    states[stateIdx].addEventListener("mouseover", function(hovered) {
+    console.log(hovered.toElement);
+
+  });
+    stateIdx += 1;
+  }
+
+
+
+
+
 }
 
 
