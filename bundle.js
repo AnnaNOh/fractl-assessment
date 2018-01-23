@@ -10126,48 +10126,60 @@ function ready(error, us, percentOfPop) {
   stateNameDiv.className = "stateNameDiv";
   hoverInfo.appendChild(stateNameDiv);
 
-  let stateAbbv = document.createElement("div");
-  stateAbbv.className = "stateAbbv";
-  stateNameDiv.appendChild(stateAbbv);
-
   let stateName = document.createElement("div");
   stateName.className = "stateName";
   stateNameDiv.appendChild(stateName);
 
+  let stateAbbv = document.createElement("div");
+  stateAbbv.className = "stateAbbv";
+  stateNameDiv.appendChild(stateAbbv);
+
+
   // State's Other Info
-  let stateHouseholdIncome = document.createElement("div");
-  stateHouseholdIncome.className = "stateHouseholdIncome";
-  hoverInfo.appendChild(stateHouseholdIncome);
+  let statePercentofIncome = document.createElement("div");
+  statePercentofIncome.className = "statePercentofIncome";
+  hoverInfo.appendChild(statePercentofIncome);
 
   let statePercentofPop = document.createElement("div");
   statePercentofPop.className = "statePercentofPop";
   hoverInfo.appendChild(statePercentofPop);
 
-  let statePercentofIncome = document.createElement("div");
-  statePercentofIncome.className = "statePercentofIncome";
-  hoverInfo.appendChild(statePercentofIncome);
+  let stateHouseholdIncome = document.createElement("div");
+  stateHouseholdIncome.className = "stateHouseholdIncome";
+  hoverInfo.appendChild(stateHouseholdIncome);
+
+
 
 
   // added hover listener
   let states = document.getElementsByClassName("state");
   let stateIdx = 0;
   while (stateIdx < states.length) {
+    
     states[stateIdx].addEventListener("mouseover", function(hovered) {
-    let hoveredClassName = Number(hovered.toElement.className.baseVal.slice(5));
+      hovered.toElement.classList.add("hovered");
+    let hoveredClassName = Number(hovered.toElement.className.baseVal.slice(5, 8));
     if (hoveredClassName < 10) {
       hoveredClassName = "0" + hoveredClassName.toString();
     }
-    console.log(data[hoveredClassName]);
     let hoverData = data[hoveredClassName];
+
     stateAbbv.innerHTML = hoverData.StateAbbv;
     stateName.innerHTML = hoverData.State;
     stateHouseholdIncome.innerHTML = `Median Household Income: $${hoverData.MedianHouseholdIncome.toString().slice(0,2)},${hoverData.MedianHouseholdIncome.toString().slice(2)}`;
     statePercentofPop.innerHTML = `Percent of Population: ${hoverData.PercentofPopulation}%`;
     statePercentofIncome.innerHTML = `Percent of Income: ${hoverData.PercentofIncome}%`;
+    });
 
-  });
+    states[stateIdx].addEventListener("mouseout", function(hovered) {
+      console.log(hovered.toElement);
+      hovered.toElement.classList.remove("hovered");
+    });
+
+
     stateIdx += 1;
   }
+
 
 
 

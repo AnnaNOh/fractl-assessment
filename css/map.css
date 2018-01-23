@@ -28,6 +28,33 @@
   left: 15px;
   width: 100px;
   /*padding-right: 25px;*/
-  font-size: 0.7em;
+  font-size: 1em;
   font-weight: 400;
+}
+
+.hoverInfo {
+  position: relative;
+  top: -580px;
+  left: 950px;
+
+  min-width: 300px;
+  max-width: 500px;
+  background: white;
+  border-radius: 5px;
+  font-size: 1.2em;
+  padding: 10px;
+}
+
+.stateNameDiv {
+  display: flex;
+  flex-direction: row;
+}
+.stateNameDiv > * {
+  /*border-bottom: 1px solid black;*/
+  margin-right: 10px;
+  font-size: 2em;
+  font-weight: 600;
+}
+.hovered {
+  fill: #ffc107;
 }
