@@ -10154,16 +10154,21 @@ function ready(error, us, percentOfPop) {
   // added hover listener
   let states = document.getElementsByClassName("state");
   let stateIdx = 0;
+  let currentState = null;
   while (stateIdx < states.length) {
 
-    states[stateIdx].addEventListener("mouseover", function(hovered) {
-      hovered.toElement.classList.add("hovered");
-    let hoveredClassName = Number(hovered.toElement.className.baseVal.slice(5, 8));
-    if (hoveredClassName < 10) {
-      hoveredClassName = "0" + hoveredClassName.toString();
-    }
-    let hoverData = data[hoveredClassName];
 
+    states[stateIdx].addEventListener("mouseover", function(hovered) {
+      currentState = hovered.toElement.classList;
+      hovered.toElement.classList.add("hovered");
+
+      let hoveredClassName = Number(hovered.toElement.className.baseVal.slice(5, 8));
+      if (hoveredClassName < 10) {
+        hoveredClassName = "0" + hoveredClassName.toString();
+      }
+
+    // show data relevant to hovered over state
+    let hoverData = data[hoveredClassName];
     stateAbbv.innerHTML = hoverData.StateAbbv;
     stateName.innerHTML = hoverData.State;
     stateHouseholdIncome.innerHTML = `Median Household Income: $${hoverData.MedianHouseholdIncome.toString().slice(0,2)},${hoverData.MedianHouseholdIncome.toString().slice(2)}`;
@@ -10172,8 +10177,9 @@ function ready(error, us, percentOfPop) {
     });
 
     states[stateIdx].addEventListener("mouseout", function(hovered) {
-      console.log(hovered.toElement);
-      hovered.toElement.classList.remove("hovered");
+      if (currentState != hovered.toElement.classList) {
+        currentState.remove("hovered");
+      }
     });
 
 
