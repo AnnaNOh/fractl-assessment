@@ -1,8 +1,20 @@
 
 .title {
+  font-family: "Roboto-Slab", serif;
   font-size: 5em;
-  color: blue;
+  color: black;
+
+  margin: 50px auto 0 auto;
+  text-align: center;
 }
+
+.graph {
+  width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  left: -50px;
+}
+
 
 .legendTitle {
   margin-left: 20px;
@@ -10,9 +22,9 @@
   /*padding-left: 50px;*/
   position: relative;
   top: -60px;
+
   font-size: 1.3em;
   font-weight: 600;
-
 }
 
 .legendTextHolder {
@@ -34,8 +46,8 @@
 
 .hoverInfo {
   position: relative;
-  top: -580px;
-  left: 950px;
+  top: -550px;
+  left: 870px;
 
   min-width: 300px;
   max-width: 500px;

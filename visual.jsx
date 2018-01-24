@@ -56,6 +56,7 @@ function ready(error, us, percentOfPop) {
   });
 
 
+
   // push data-states.csv data into us (the d3 json state data)
   us.objects.states.geometries.forEach ( function(json){
     percentOfPop.forEach (function(pop){
@@ -68,6 +69,7 @@ function ready(error, us, percentOfPop) {
       }
     });
   });
+
 
 
 // making the state map
@@ -88,6 +90,7 @@ function ready(error, us, percentOfPop) {
   console.log(data);
 
 
+
 // change the color of the state depending on the percent of population
   const domainMax = 61.0;
   const domainMin = 30.0;
@@ -101,6 +104,7 @@ function ready(error, us, percentOfPop) {
         color = Math.floor((data[d.id].PercentofPopulation - domainMin) / increment);
         return colorScheme[color];
       });
+
 
 
 // color legend
@@ -125,6 +129,8 @@ function ready(error, us, percentOfPop) {
 
     colorIdx += 1;
   }
+
+
 
   // added Legend Title
   var graph = document.getElementsByClassName("graph");
@@ -153,12 +159,13 @@ function ready(error, us, percentOfPop) {
   }
 
 
+
   //added Hover Information
   let hoverInfo = document.createElement("div");
   hoverInfo.className = "hoverInfo";
   graph.appendChild(hoverInfo);
 
-  // State Name and Abbv
+  // Added State's Name and Abbv
   let stateNameDiv = document.createElement("div");
   stateNameDiv.className = "stateNameDiv";
   hoverInfo.appendChild(stateNameDiv);
@@ -170,7 +177,6 @@ function ready(error, us, percentOfPop) {
   let stateAbbv = document.createElement("div");
   stateAbbv.className = "stateAbbv";
   stateNameDiv.appendChild(stateAbbv);
-
 
   // State's Other Info
   let statePercentofIncome = document.createElement("div");
@@ -187,47 +193,47 @@ function ready(error, us, percentOfPop) {
 
 
 
-
-  // added hover listener
+  // added hover listener to adjust hovered over state's color
   let states = document.getElementsByClassName("state");
   let stateIdx = 0;
   let currentState = null;
   while (stateIdx < states.length) {
 
-
     states[stateIdx].addEventListener("mouseover", function(hovered) {
-
+      // remove orange color for states that are not being hovered over
       if (currentState != hovered.toElement.classList && currentState != null) {
         currentState.remove("hovered");
       }
+
+      // set hovered over state's color to orange
       currentState = hovered.toElement.classList;
-
-
       hovered.toElement.classList.add("hovered");
 
+
+      // adjust hovered state's name for data viewing
       let hoveredClassName = Number(hovered.toElement.className.baseVal.slice(5, 8));
       if (hoveredClassName < 10) {
         hoveredClassName = "0" + hoveredClassName.toString();
       }
-
-    // show data relevant to hovered over state
-    let hoverData = data[hoveredClassName];
-    stateAbbv.innerHTML = hoverData.StateAbbv;
-    stateName.innerHTML = hoverData.State;
-    stateHouseholdIncome.innerHTML = `Median Household Income: $${hoverData.MedianHouseholdIncome.toString().slice(0,2)},${hoverData.MedianHouseholdIncome.toString().slice(2)}`;
-    statePercentofPop.innerHTML = `Percent of Population: ${hoverData.PercentofPopulation}%`;
-    statePercentofIncome.innerHTML = `Percent of Income: ${hoverData.PercentofIncome}%`;
+      // show data relevant to hovered over state
+      let hoverData = data[hoveredClassName];
+      stateAbbv.innerHTML = hoverData.StateAbbv;
+      stateName.innerHTML = hoverData.State;
+      stateHouseholdIncome.innerHTML = `Median Household Income: $${hoverData.MedianHouseholdIncome.toString().slice(0,2)},${hoverData.MedianHouseholdIncome.toString().slice(2)}`;
+      statePercentofPop.innerHTML = `Percent of Population: ${hoverData.PercentofPopulation}%`;
+      statePercentofIncome.innerHTML = `Percent of Income: ${hoverData.PercentofIncome}%`;
     });
 
     states[stateIdx].addEventListener("mouseout", function(hovered) {
+      // removes hovered state's orange coloring when no longer hovering over the map
       if (currentState != hovered.toElement.classList) {
         currentState.remove("hovered");
       }
     });
 
-
     stateIdx += 1;
   }
+
 
 
 
