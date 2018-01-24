@@ -10155,7 +10155,7 @@ function ready(error, us, percentOfPop) {
   let states = document.getElementsByClassName("state");
   let stateIdx = 0;
   while (stateIdx < states.length) {
-    
+
     states[stateIdx].addEventListener("mouseover", function(hovered) {
       hovered.toElement.classList.add("hovered");
     let hoveredClassName = Number(hovered.toElement.className.baseVal.slice(5, 8));
