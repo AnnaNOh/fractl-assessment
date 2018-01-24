@@ -10159,7 +10159,13 @@ function ready(error, us, percentOfPop) {
 
 
     states[stateIdx].addEventListener("mouseover", function(hovered) {
+
+      if (currentState != hovered.toElement.classList && currentState != null) {
+        currentState.remove("hovered");
+      }
       currentState = hovered.toElement.classList;
+
+
       hovered.toElement.classList.add("hovered");
 
       let hoveredClassName = Number(hovered.toElement.className.baseVal.slice(5, 8));
