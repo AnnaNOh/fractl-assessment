@@ -237,6 +237,10 @@ function ready(error, us, percentOfPop) {
 
 
 
+// notes to improve upon
+// add better font
+// change words to be centered by adding a note like "hover to center text"
+// add more padding in general
 
 
 
